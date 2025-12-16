@@ -6,6 +6,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import NavBar from "./components/NavBar";
 import PostDetail from "./pages/PostDetail";
 import SearchResults from "./pages/SearchResults";
+import ManageUsers from "./pages/ManageUsers";
 
 import CreatePost from "./pages/CreatePost";
 import MyPosts from "./pages/MyPosts";
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/search" element={<SearchResults />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/manage-users" element={<ManageUsers />} />
       </Routes>
     </BrowserRouter>
   );
