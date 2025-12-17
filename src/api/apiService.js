@@ -15,6 +15,11 @@ api.interceptors.request.use((config) => {
 export const getAllPosts = () => api.get("/api/posts");
 export const getPostById = (id) => api.get(`/api/posts/${id}`);
 export const createPost = (data) => api.post("/api/posts", data);
+export const deletePost = (id) => api.delete(`/api/posts/${id}`);
+
+export const updatePost = (id, data) =>
+  api.put(`/api/posts/${id}`, data);
+
 export const searchPosts = (keyword) =>
   api.get("/search/posts", { params: { keyword } });
 
@@ -24,6 +29,19 @@ export const addComment = (postId, content) =>
   api.post(`/api/posts/${postId}/comments`, { content });
 export const updateComment = (id, comment) =>
   api.put(`/api/comments/${id}`, comment);
-export const deleteComment = (id) => api.delete(`api/comments/${id}`);
+export const deleteComment = (id) =>
+  api.delete(`/api/comments/${id}`);
+
+// Job Applications
+export const submitApplication = (data) =>
+  api.post("/api/applications", data);
+export const getMyApplications = () =>
+  api.get("/api/applications/my");
+export const getApplicationsForJob = (jobPostId) =>
+  api.get(`/api/applications/job/${jobPostId}`);
+export const updateApplicationStatus = (id, status) =>
+  api.put(`/api/applications/${id}/status`, { status });
+export const deleteApplication = (id) =>
+  api.delete(`/api/applications/${id}`);
 
 export default api;
