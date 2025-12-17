@@ -16,7 +16,7 @@ export const getAllPosts = () => api.get("/api/posts");
 export const getPostById = (id) => api.get(`/api/posts/${id}`);
 export const createPost = (data) => api.post("/api/posts", data);
 export const searchPosts = (keyword) =>
-  api.get("/search/posts", { params: { keyword } });
+  api.get("/api/search/posts", { params: { keyword } });
 export const updatePost = (postId, data) =>
   api.put(`/api/posts/${postId}`, data); // use 'api' instance, not default axios
 
