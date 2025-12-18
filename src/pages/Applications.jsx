@@ -57,19 +57,20 @@ export default function Applications() {
     if (!selectedJob || !token) return;
     
     let isMounted = true;
-    setLoading(true);
     
-    getApplicationsForJob(selectedJob)
-      .then((res) => {
+    const fetchApplications = async () => {
+      try {
+        const res = await getApplicationsForJob(selectedJob);
         if (isMounted) {
           const apps = Array.isArray(res.data) ? res.data : [];
           setApplications(apps);
         }
-      })
-      .catch(console.error)
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    
+    fetchApplications();
     
     return () => { isMounted = false; };
   }, [selectedJob, token]);

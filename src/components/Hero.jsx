@@ -1,90 +1,102 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/auth/useAuth";
-import { ArrowRight, Briefcase, BookOpen, Code2, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import robotImage from "@/assets/toppng.com-robot-png-686x717.png";
 
 export default function Hero() {
   const navigate = useNavigate();
-  const { token } = useAuth();
+
+  const stats = [
+    { value: "500+", label: "Articles" },
+    { value: "50+", label: "Companies" },
+    { value: "150+", label: "Jobs Posted" },
+    { value: "1000+", label: "Developers" },
+  ];
 
   return (
-    <section className="relative min-h-[600px] flex items-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`
-        }}
-      />
-      
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/90 to-slate-900/75" />
-      
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 w-full">
-        <div className="max-w-2xl">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/30 rounded-full px-4 py-2 mb-6">
-            <Sparkles className="h-4 w-4 text-indigo-400" />
-            <span className="text-sm text-indigo-300 font-medium">
-              Learn Java & Find Your Dream Job
-            </span>
-          </div>
-          
-          {/* Heading */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Master Java,
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
-              Build Your Future
-            </span>
-          </h1>
-          
-          {/* Description */}
-          <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
-            Your one-stop destination for <strong className="text-white">Java tutorials</strong>, 
-            <strong className="text-white"> Spring Boot guides</strong>, and 
-            <strong className="text-white"> career opportunities</strong>. 
-            Learn, grow, and land your dream developer job in Belgium & EU.
-          </p>
-          
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4">
-            <Button
-              size="lg"
-              onClick={() => navigate("/")}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white group h-12 px-6"
-            >
-              <BookOpen className="h-5 w-5" />
-              Read Articles
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button
-              size="lg"
-              onClick={() => {
-                document.getElementById('jobs-section')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="bg-white text-indigo-600 hover:bg-slate-100 h-12 px-6 font-semibold"
-            >
-              <Briefcase className="h-5 w-5" />
-              Browse Jobs
-            </Button>
-            {token && (
+    <section className="bg-[#e8e8e8] min-h-[650px] relative overflow-hidden pt-16">
+      <div className="max-w-7xl mx-auto px-6 py-16 h-full">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Left Content */}
+          <div className="space-y-8">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-3">
+              <span className="bg-[#1a1a2e] text-white text-sm px-4 py-2 rounded-full font-medium">
+                1000+ developers joined today
+              </span>
+              <button 
+                onClick={() => {
+                  document.getElementById('email-subscription')?.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                  });
+                }}
+                className="text-[#1a1a2e] font-medium flex items-center gap-1 hover:gap-2 transition-all"
+              >
+                Join now <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Heading */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1a1a2e] leading-tight">
+              Master Java,
+              <br />
+              Build Your
+              <br />
+              <span className="text-[#1a1a2e]">Future Career</span>
+            </h1>
+
+            {/* Description */}
+            <p className="text-gray-600 text-lg max-w-md leading-relaxed">
+              Your one-stop destination for Java tutorials, Spring Boot guides, 
+              and career opportunities. Learn, grow, and land your dream 
+              developer job in Belgium & EU.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4">
               <Button
                 size="lg"
-                variant="outline"
-                onClick={() => navigate("/create")}
-                className="border-white/30 text-white hover:bg-white/10 h-12 px-6"
+                onClick={() => navigate("/posts")}
+                className="bg-white text-[#1a1a2e] hover:bg-gray-100 border border-gray-300 rounded-full h-12 px-8 font-medium group"
               >
-                <Code2 className="h-5 w-5" />
-                Write Article
+                Get started
+                <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
               </Button>
-            )}
+              <Button
+                size="lg"
+                onClick={() => navigate("/jobs")}
+                className="bg-[#1a1a2e] text-white hover:bg-[#2a2a3e] rounded-full h-12 px-8 font-medium"
+              >
+                Browse Jobs
+              </Button>
+            </div>
+
+            {/* Stats */}
+            <div className="flex flex-wrap gap-8 pt-8 border-t border-gray-300">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-[#1a1a2e]">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-gray-500">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Image - Anchored to bottom */}
+          <div className="hidden lg:block absolute right-0 bottom-0 w-1/2 h-full pointer-events-none">
+            <div className="relative h-full flex items-end justify-center">
+              <img
+                src={robotImage}
+                alt="Robot Developer"
+                className="w-auto h-[90%] max-h-[600px] object-contain object-bottom"
+              />
+            </div>
           </div>
         </div>
       </div>
-      
-      {/* Decorative Elements */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
     </section>
   );
 }

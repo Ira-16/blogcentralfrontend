@@ -4,13 +4,13 @@ import { getPostById, getCommentsForPost, deletePost } from "../api/apiService";
 import { useAuth } from "@/auth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Pencil, Trash2, ArrowLeft, MapPin, Briefcase, Building2, Calendar, Share2, Bookmark, Send } from "lucide-react";
+import { Pencil, Trash2, ArrowLeft, MapPin, Briefcase, Building2, Calendar, Share2, Bookmark, Send, User, Tag, Heart } from "lucide-react";
 import { formatRelativeTime } from "@/utils/formatDate";
 import CommentItem from "../components/CommentItem";
 import CommentForm from "../components/CommentForm";
 import ApplyModal from "../components/ApplyModal";
 
-// Parse job details from content
+// Parse job details from content (only used for JOB type)
 function parseJobContent(content) {
   if (!content) return { location: null, contract: null, sections: [] };
   
@@ -44,6 +44,11 @@ function parseJobContent(content) {
   return { location, contract, sections };
 }
 
+// Check if post is a JOB type
+function isJobPost(post) {
+  return post?.type === "JOB";
+}
+
 export default function PostDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -52,6 +57,8 @@ export default function PostDetail() {
   const [comments, setComments] = useState([]);
   const [deleting, setDeleting] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   useEffect(() => {
     getPostById(id).then((res) => setPost(res.data));
@@ -59,6 +66,15 @@ export default function PostDetail() {
   }, [id]);
 
   const handleAdded = (comment) => setComments((prev) => [...prev, comment]);
+
+  const handleLike = () => {
+    if (!token) {
+      navigate("/login", { state: { from: `/posts/${id}` } });
+      return;
+    }
+    setLiked(!liked);
+    setLikeCount(prev => liked ? prev - 1 : prev + 1);
+  };
 
   const handleApplyClick = () => {
     if (!token) {
@@ -70,7 +86,10 @@ export default function PostDetail() {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this job posting?")) return;
+    const confirmMessage = isJobPost(post) 
+      ? "Are you sure you want to delete this job posting?" 
+      : "Are you sure you want to delete this article?";
+    if (!window.confirm(confirmMessage)) return;
     
     setDeleting(true);
     try {
@@ -95,15 +114,16 @@ export default function PostDetail() {
   );
 
   const isOwner = user && (user.role === "ADMIN" || post.author?.username === user.username);
-  const { location, contract, sections } = parseJobContent(post.content);
-  const authorName = post.author?.username || post.author?.firstName || "Company";
+  const isJob = isJobPost(post);
+  const { location, contract, sections } = isJob ? parseJobContent(post.content) : { location: null, contract: null, sections: [] };
+  const authorName = post.author?.username || post.author?.firstName || (isJob ? "Company" : "Author");
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       {/* Back button */}
-      <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-indigo-600 transition-colors">
+      <Link to={isJob ? "/jobs" : "/articles"} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-indigo-600 transition-colors">
         <ArrowLeft className="h-4 w-4" />
-        Back to Jobs
+        {isJob ? "Back to Jobs" : "Back to Articles"}
       </Link>
 
       {/* Main Card */}
@@ -162,65 +182,118 @@ export default function PostDetail() {
             </div>
           </div>
 
-          {/* Job Meta Badges */}
+          {/* Meta Badges */}
           <div className="flex flex-wrap gap-3 py-4 mb-6 border-y border-gray-100">
-            <div className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full">
-              <Building2 className="h-4 w-4" />
-              <span className="font-medium">{authorName}</span>
+            {isJob ? (
+              /* Job Meta Badges */
+              <>
+                <div className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full">
+                  <Building2 className="h-4 w-4" />
+                  <span className="font-medium">{authorName}</span>
+                </div>
+                {location && (
+                  <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full">
+                    <MapPin className="h-4 w-4" />
+                    <span className="font-medium">{location}</span>
+                  </div>
+                )}
+                {contract && (
+                  <div className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full">
+                    <Briefcase className="h-4 w-4" />
+                    <span className="font-medium">{contract}</span>
+                  </div>
+                )}
+              </>
+            ) : (
+              /* Article Meta Badges */
+              <>
+                <div className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full">
+                  <User className="h-4 w-4" />
+                  <span className="font-medium">{authorName}</span>
+                </div>
+                {post.category && (
+                  <div className="flex items-center gap-2 bg-purple-50 text-purple-700 px-4 py-2 rounded-full">
+                    <Tag className="h-4 w-4" />
+                    <span className="font-medium">{post.category.name}</span>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Content Section - Different display for Article vs Job */}
+          {isJob ? (
+            /* Job Sections */
+            <div className="space-y-6">
+              {sections.map((section, idx) => (
+                <div key={idx}>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{section.title}</h3>
+                  <ul className="space-y-2">
+                    {section.items.map((item, itemIdx) => (
+                      <li key={itemIdx} className="flex items-start gap-2 text-gray-700">
+                        <span className="text-indigo-500 mt-1">•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-            {location && (
-              <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full">
-                <MapPin className="h-4 w-4" />
-                <span className="font-medium">{location}</span>
+          ) : (
+            /* Article Content */
+            <div className="prose prose-lg max-w-none">
+              <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                {post.content}
               </div>
-            )}
-            {contract && (
-              <div className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full">
-                <Briefcase className="h-4 w-4" />
-                <span className="font-medium">{contract}</span>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* Job Sections */}
-          <div className="space-y-6">
-            {sections.map((section, idx) => (
-              <div key={idx}>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{section.title}</h3>
-                <ul className="space-y-2">
-                  {section.items.map((item, itemIdx) => (
-                    <li key={itemIdx} className="flex items-start gap-2 text-gray-700">
-                      <span className="text-indigo-500 mt-1">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          {/* Like Button - Only for Articles */}
+          {!isJob && (
+            <div className="mt-8 pt-6 border-t flex items-center gap-4">
+              <Button 
+                variant={liked ? "default" : "outline"} 
+                size="lg"
+                onClick={handleLike}
+                className={liked ? "bg-red-500 hover:bg-red-600" : "hover:text-red-500 hover:border-red-500"}
+              >
+                <Heart className={`h-5 w-5 mr-2 ${liked ? "fill-white" : ""}`} />
+                {liked ? "Liked" : "Like this Article"}
+              </Button>
+              {likeCount > 0 && (
+                <span className="text-muted-foreground">
+                  {likeCount} {likeCount === 1 ? "person likes" : "people like"} this article
+                </span>
+              )}
+            </div>
+          )}
 
-          {/* Apply Button */}
-          <div className="mt-8 pt-6 border-t">
-            <Button size="lg" className="w-full md:w-auto px-8" onClick={handleApplyClick}>
-              <Send className="h-4 w-4 mr-2" />
-              Apply for this Position
-            </Button>
-            {!token && (
-              <p className="text-sm text-muted-foreground mt-2">
-                You need to <Link to="/login" className="text-indigo-600 hover:underline">log in</Link> to apply
-              </p>
-            )}
-          </div>
+          {/* Apply Button - Only for Jobs */}
+          {isJob && (
+            <div className="mt-8 pt-6 border-t">
+              <Button size="lg" className="w-full md:w-auto px-8" onClick={handleApplyClick}>
+                <Send className="h-4 w-4 mr-2" />
+                Apply for this Position
+              </Button>
+              {!token && (
+                <p className="text-sm text-muted-foreground mt-2">
+                  You need to <Link to="/login" className="text-indigo-600 hover:underline">log in</Link> to apply
+                </p>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* Apply Modal */}
-      <ApplyModal
-        isOpen={showApplyModal}
-        onClose={() => setShowApplyModal(false)}
-        jobTitle={post.title}
-        postId={id}
-      />
+      {/* Apply Modal - Only for Jobs */}
+      {isJob && (
+        <ApplyModal
+          isOpen={showApplyModal}
+          onClose={() => setShowApplyModal(false)}
+          jobTitle={post.title}
+          postId={id}
+        />
+      )}
 
       {/* Comments Section */}
       <Card>
