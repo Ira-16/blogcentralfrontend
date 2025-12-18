@@ -161,12 +161,12 @@ export default function FeaturedArticles({ limit = 6 }) {
         {/* View All Button */}
         <div className="text-center mt-10">
           <Button 
-            variant="outline" 
-            className="group"
             onClick={() => navigate("/posts")}
+            className="bg-[#1a1a2e] text-white hover:bg-[#2d2d44] rounded-full px-8 h-12 text-base font-medium transition-all duration-200"
           >
+            <BookOpen className="h-5 w-5 mr-2" />
             View All Articles
-            <ArrowUpRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUpRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </div>
