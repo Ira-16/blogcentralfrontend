@@ -14,6 +14,7 @@ import Jobs from "./pages/Jobs";
 import VerifyEmail from "./pages/VerifyEmail";
 import AdminDashboard from "./pages/AdminDashboard";
 import ManageUsers from "./pages/ManageUsers";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/applications" element={<PrivateRoute><Applications /></PrivateRoute>} />
         <Route path="/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
         <Route path="/manage-users" element={<PrivateRoute><ManageUsers /></PrivateRoute>} />
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
