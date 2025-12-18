@@ -65,10 +65,15 @@ export default function Login() {
       
       if (err.response) {
         const status = err.response.status;
-        if (status === 401) {
+        const message = err.response.data?.message || err.response.data?.error || "";
+        
+        if (status === 401 || status === 403) {
+          // Both 401 and 403 during login mean invalid credentials
           setError("Invalid username or password. Please try again.");
-        } else if (status === 403) {
-          setError("Your account may be locked. Please contact support.");
+        } else if (status === 400) {
+          setError(message || "Invalid request. Please check your input.");
+        } else if (status >= 500) {
+          setError("Server error. Please try again later.");
         } else {
           setError("Unable to sign in. Please try again later.");
         }

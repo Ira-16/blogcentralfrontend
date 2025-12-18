@@ -219,8 +219,8 @@ export default function NavBar() {
               </div>
             ) : (
               <div className="flex items-center gap-4">
-                {/* User Avatar and Greeting */}
-                <div className="flex items-center gap-2">
+                {/* User Avatar and Greeting - Clickable */}
+                <Link to="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity" title="My Profile">
                   <div className="w-9 h-9 rounded-full bg-[#1a1a2e] flex items-center justify-center text-white font-semibold text-sm">
                     {user?.username?.charAt(0).toUpperCase() || <User className="h-4 w-4" />}
                   </div>
@@ -228,7 +228,7 @@ export default function NavBar() {
                     <span className="text-xs text-gray-500">{getGreeting()}</span>
                     <span className="text-sm font-medium text-[#1a1a2e]">{user?.username}</span>
                   </div>
-                </div>
+                </Link>
                 <Button 
                   onClick={handleLogout}
                   variant="outline"
@@ -254,15 +254,16 @@ export default function NavBar() {
           <div className="md:hidden bg-white border-t border-gray-100 py-4 space-y-1">
             {/* User greeting in mobile */}
             {token && user && (
-              <div className="px-6 py-3 flex items-center gap-3 border-b border-gray-100 mb-2">
+              <Link to="/profile" className="px-6 py-3 flex items-center gap-3 border-b border-gray-100 mb-2 hover:bg-gray-50 transition-colors">
                 <div className="w-10 h-10 rounded-full bg-[#1a1a2e] flex items-center justify-center text-white font-semibold">
                   {user?.username?.charAt(0).toUpperCase() || <User className="h-5 w-5" />}
                 </div>
                 <div>
                   <span className="text-xs text-gray-500">{getGreeting()}</span>
                   <p className="text-sm font-medium text-[#1a1a2e]">{user?.username}</p>
+                  <span className="text-xs text-gray-400">View Profile</span>
                 </div>
-              </div>
+              </Link>
             )}
             
             <Link 

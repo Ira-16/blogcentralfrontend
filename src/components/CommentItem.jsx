@@ -75,14 +75,12 @@ export default function CommentItem({
             </>
           ) : (
             <>
-              {isCommentOwner && (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="px-4 py-1.5 text-sm bg-[#1a1a2e] text-white rounded-full hover:bg-[#2d2d44] transition font-medium"
-                >
-                  Edit
-                </button>
-              )}
+              <button
+                onClick={() => setIsEditing(true)}
+                className="px-4 py-1.5 text-sm bg-[#1a1a2e] text-white rounded-full hover:bg-[#2d2d44] transition font-medium"
+              >
+                Edit
+              </button>
               <button
                 onClick={() => onDelete(comment)}
                 className="px-4 py-1.5 text-sm bg-red-500 text-white rounded-full hover:bg-red-600 transition font-medium"
