@@ -13,6 +13,8 @@ api.interceptors.request.use((config) => {
 });
 // Posts
 export const getAllPosts = () => api.get("/api/posts");
+export const getAllArticles = () => api.get("/api/articles");
+export const getAllJobs = () => api.get("/api/jobs");
 export const getPostById = (id) => api.get(`/api/posts/${id}`);
 export const createPost = (data) => api.post("/api/posts", data);
 export const deletePost = (id) => api.delete(`/api/posts/${id}`);
@@ -44,6 +46,20 @@ export const getApplicationsForJob = (jobPostId) =>
 export const updateApplicationStatus = (id, status) =>
   api.put(`/api/applications/${id}/status`, { status });
 export const deleteApplication = (id) => api.delete(`/api/applications/${id}`);
+
+// Email Subscription
+export const subscribe = (email) =>
+  api.post("/api/subscribers", { email });
+export const unsubscribe = (email) =>
+  api.delete("/api/subscribers", { data: { email } });
+export const checkSubscription = (email) =>
+  api.get("/api/subscribers/check", { params: { email } });
+export const verifyEmail = (token) =>
+  api.get("/api/subscribers/verify", { params: { token } });
+
+// Categories
+export const getCategories = () =>
+  api.get("/api/categories");
 
 export default api;
 
