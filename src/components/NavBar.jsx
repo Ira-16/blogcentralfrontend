@@ -88,7 +88,7 @@ export default function NavBar() {
 
   const handleLogout = () => {
     logout();
-    nav("/login");
+    nav("/");
   };
 
   // Fetch pending applications count for admin/manager
@@ -165,15 +165,8 @@ export default function NavBar() {
             </div>            
             <NavLink to="/jobs">Jobs</NavLink>
             {/* Admin Links */}
-            {token && user?.role === "ADMIN" && (
-              <>
-                <NavLink to="/create">Create Post</NavLink>
-                <NavLink to="/manage-users">Manage Users</NavLink>
-              </>
-            )}
-
-            {token && user?.role === "MANAGER" && (
-              <NavLink to="/manage-users">Manage Users</NavLink>
+            {token && (user?.role === "ADMIN" || user?.role === "MANAGER") && (
+              <NavLink to="/admin">Dashboard</NavLink>
             )}
           </nav>
 
@@ -304,35 +297,14 @@ export default function NavBar() {
               Jobs
             </Link>
             
-            {token && user?.role === "ADMIN" && (
-              <>
-                <Link 
-                  to="/create" 
-                  className={`block px-6 py-3 text-[15px] font-medium transition-colors duration-200 ${
-                    isActive("/create") ? "text-[#1a1a2e] bg-gray-50" : "text-gray-600 hover:text-[#1a1a2e] hover:bg-gray-50"
-                  }`}
-                >
-                  Create Post
-                </Link>
-                <Link 
-                  to="/manage-users" 
-                  className={`block px-6 py-3 text-[15px] font-medium transition-colors duration-200 ${
-                    isActive("/manage-users") ? "text-[#1a1a2e] bg-gray-50" : "text-gray-600 hover:text-[#1a1a2e] hover:bg-gray-50"
-                  }`}
-                >
-                  Manage Users
-                </Link>
-              </>
-            )}
-
-            {token && user?.role === "MANAGER" && (
+            {token && (user?.role === "ADMIN" || user?.role === "MANAGER") && (
               <Link 
-                to="/manage-users" 
+                to="/admin" 
                 className={`block px-6 py-3 text-[15px] font-medium transition-colors duration-200 ${
-                  isActive("/manage-users") ? "text-[#1a1a2e] bg-gray-50" : "text-gray-600 hover:text-[#1a1a2e] hover:bg-gray-50"
+                  isActive("/admin") ? "text-[#1a1a2e] bg-gray-50" : "text-gray-600 hover:text-[#1a1a2e] hover:bg-gray-50"
                 }`}
               >
-                Manage Users
+                Dashboard
               </Link>
             )}
 

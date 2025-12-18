@@ -76,10 +76,10 @@ export default function Jobs() {
             Career Opportunities
           </span>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            Job Openings
+            Latest Job Openings
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
-            Find your dream Java developer position at top companies in Belgium & EU
+            Apply for developer positions at top companies in Belgium and the EU
           </p>
 
           {/* Search & Filter */}
@@ -94,7 +94,7 @@ export default function Jobs() {
                 className="pl-10 py-3 rounded-xl"
               />
             </div>
-            <Button variant="outline" className="rounded-xl px-4">
+            <Button className="rounded-full px-5 bg-[#1a1a2e] hover:bg-[#2d2d44] text-white">
               <Filter className="h-5 w-5" />
             </Button>
           </div>

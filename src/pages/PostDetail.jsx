@@ -184,7 +184,7 @@ export default function PostDetail() {
             <div className="flex gap-2 flex-shrink-0">
               {isOwner ? (
                 <>
-                  <Button asChild variant="outline" size="sm">
+                  <Button asChild size="sm" className="rounded-full bg-[#1a1a2e] hover:bg-[#2d2d44] text-white">
                     <Link to={`/edit/${id}`}>
                       <Pencil className="h-4 w-4 mr-1" /> Edit
                     </Link>
@@ -194,6 +194,7 @@ export default function PostDetail() {
                     size="sm"
                     onClick={handleDelete}
                     disabled={deleting}
+                    className="rounded-full"
                   >
                     <Trash2 className="h-4 w-4 mr-1" />
                     {deleting ? "Deleting..." : "Delete"}
@@ -201,11 +202,13 @@ export default function PostDetail() {
                 </>
               ) : (
                 <>
-                  <Button variant="outline" size="sm">
-                    <Bookmark className="h-4 w-4 mr-1" /> Save
+                  <Button size="sm" className="rounded-full bg-[#1a1a2e] hover:bg-[#2d2d44] text-white">
+                    <Bookmark className="h-4 w-4 mr-1" />
+                    Save
                   </Button>
-                  <Button variant="outline" size="sm">
-                    <Share2 className="h-4 w-4 mr-1" /> Share
+                  <Button size="sm" className="rounded-full bg-[#1a1a2e] hover:bg-[#2d2d44] text-white">
+                    <Share2 className="h-4 w-4 mr-1" />
+                    Share
                   </Button>
                 </>
               )}
@@ -282,10 +285,9 @@ export default function PostDetail() {
           {!isJob && (
             <div className="mt-8 pt-6 border-t flex items-center gap-4">
               <Button 
-                variant={liked ? "default" : "outline"} 
                 size="lg"
                 onClick={handleLike}
-                className={liked ? "bg-red-500 hover:bg-red-600" : "hover:text-red-500 hover:border-red-500"}
+                className={`rounded-full ${liked ? "bg-red-500 hover:bg-red-600" : "bg-[#1a1a2e] hover:bg-[#2d2d44]"} text-white`}
               >
                 <Heart className={`h-5 w-5 mr-2 ${liked ? "fill-white" : ""}`} />
                 {liked ? "Liked" : "Like this Article"}
@@ -301,7 +303,7 @@ export default function PostDetail() {
           {/* Apply Button - Only for Jobs */}
           {isJob && (
             <div className="mt-8 pt-6 border-t">
-              <Button size="lg" className="w-full md:w-auto px-8" onClick={handleApplyClick}>
+              <Button size="lg" className="w-full md:w-auto px-8 rounded-full bg-[#1a1a2e] hover:bg-[#2d2d44] text-white" onClick={handleApplyClick}>
                 <Send className="h-4 w-4 mr-2" />
                 Apply for this Position
               </Button>
