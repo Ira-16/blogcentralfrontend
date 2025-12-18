@@ -4,14 +4,11 @@ import { getPostById, getCommentsForPost, deletePost } from "../api/apiService";
 import { useAuth } from "@/auth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Pencil, Trash2, ArrowLeft, MapPin, Briefcase, Building2, Calendar, Share2, Bookmark, Send, User, Tag, Heart } from "lucide-react";
+import { User, Tag, Heart } from "lucide-react";
 import { formatRelativeTime } from "@/utils/formatDate";
 import CommentItem from "../components/CommentItem";
 import CommentForm from "../components/CommentForm";
 import ApplyModal from "../components/ApplyModal";
-import { useAuth } from "../auth/useAuth";
-import { Button } from "../components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Pencil,
   Trash2,
@@ -24,7 +21,6 @@ import {
   Bookmark,
   Send,
 } from "lucide-react";
-import { formatRelativeTime } from "@/utils/formatDate";
 
 // Parse job details from content (only used for JOB type)
 function parseJobContent(content) {
