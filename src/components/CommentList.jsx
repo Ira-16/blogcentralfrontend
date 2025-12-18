@@ -36,7 +36,10 @@ export default function CommentList({ postId }) {
       );
     } catch (err) {
       console.error("Edit comment error:", err);
-      const errorMsg = err.response?.data?.message || err.response?.data?.error || "Failed to update comment";
+      const errorMsg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Failed to update comment";
       setError(errorMsg);
       alert("Error: " + errorMsg);
     }
@@ -53,7 +56,10 @@ export default function CommentList({ postId }) {
       setComments((prev) => prev.filter((c) => c.id !== comment.id));
     } catch (err) {
       console.error("Delete comment error:", err);
-      const errorMsg = err.response?.data?.message || err.response?.data?.error || "Failed to delete comment";
+      const errorMsg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Failed to delete comment";
       setError(errorMsg);
       alert("Error: " + errorMsg);
     }
