@@ -1,20 +1,4 @@
 import { useState } from "react";
-<<<<<<< HEAD
-import { useAuth } from "../auth/useAuth";
-
-export default function CommentItem({ comment, onEdit, onDelete }) {
-  const { user } = useAuth();
-
-  // Determine if the current user is the author
-  const isAuthor = user && comment.authorUsername === user.username;
-
-  // Determine if the current user is an admin
-  const isAdmin = user?.role === "ADMIN" || user?.role?.toUpperCase() === "ADMIN";
-
-  const canEdit = isAuthor;
-  const canDelete = isAuthor || isAdmin; // Admins can delete any comment
-
-=======
 import { useAuth } from "@/auth/useAuth";
 
 export default function CommentItem({
@@ -23,18 +7,11 @@ export default function CommentItem({
   onDelete = () => {},
 }) {
   const { user } = useAuth();
->>>>>>> 7eff28f493f45a0c5c320b26d050cfe2f0458879
   const [isEditing, setIsEditing] = useState(false);
   const [newContent, setNewContent] = useState(comment.content);
 
   if (!comment) return null;
 
-<<<<<<< HEAD
-  const displayName =
-    comment.firstName && comment.lastName
-      ? `${comment.firstName} ${comment.lastName}`
-      : comment.authorUsername || "Unknown";
-=======
   // Check if current user can edit/delete this comment
   const isCommentOwner = user && comment.author?.username === user.username;
   const isAdmin = user?.role === "ADMIN";
@@ -53,7 +30,6 @@ export default function CommentItem({
     onEdit({ ...comment, content: newContent });
     setIsEditing(false);
   };
->>>>>>> 7eff28f493f45a0c5c320b26d050cfe2f0458879
 
   return (
     <div className="border rounded p-4 mb-3 bg-white">
@@ -69,48 +45,6 @@ export default function CommentItem({
         <p>{comment.content}</p>
       )}
 
-<<<<<<< HEAD
-      <div className="flex gap-2 mt-2">
-        {canEdit && !isEditing && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="bg-blue-500 text-white px-3 py-1 rounded"
-          >
-            Edit
-          </button>
-        )}
-
-        {canDelete && (
-          <button
-            onClick={() => onDelete(comment)}
-            className="bg-red-500 text-white px-3 py-1 rounded"
-          >
-            Delete
-          </button>
-        )}
-
-        {isEditing && (
-          <>
-            <button
-              onClick={() => {
-                onEdit({ ...comment, content: newContent });
-                setIsEditing(false);
-              }}
-              className="bg-green-500 text-white px-3 py-1 rounded"
-            >
-              Save
-            </button>
-
-            <button
-              onClick={() => setIsEditing(false)}
-              className="bg-gray-400 px-3 py-1 rounded"
-            >
-              Cancel
-            </button>
-          </>
-        )}
-      </div>
-=======
       {canModify && (
         <div className="flex gap-2">
           {isEditing ? (
@@ -151,7 +85,6 @@ export default function CommentItem({
           )}
         </div>
       )}
->>>>>>> 7eff28f493f45a0c5c320b26d050cfe2f0458879
     </div>
   );
 }
