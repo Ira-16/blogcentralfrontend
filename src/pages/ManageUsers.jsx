@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
 import api from "@/api/axios";
-import { 
-  Users, 
-  Search, 
-  Mail, 
+import {
+  Users,
+  Search,
+  Mail,
   Calendar,
   Shield,
   MoreVertical,
@@ -15,7 +15,7 @@ import {
   XCircle,
   ArrowLeft,
   UserPlus,
-  Filter
+  Filter,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,15 +53,16 @@ export default function ManageUsers() {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
-        u => u.username?.toLowerCase().includes(query) ||
-             u.email?.toLowerCase().includes(query) ||
-             u.fullName?.toLowerCase().includes(query)
+        (u) =>
+          u.username?.toLowerCase().includes(query) ||
+          u.email?.toLowerCase().includes(query) ||
+          u.fullName?.toLowerCase().includes(query)
       );
     }
 
     // Apply role filter
     if (roleFilter !== "ALL") {
-      filtered = filtered.filter(u => u.role === roleFilter);
+      filtered = filtered.filter((u) => u.role === roleFilter);
     }
 
     setFilteredUsers(filtered);
@@ -112,19 +113,21 @@ export default function ManageUsers() {
 
   const confirmEdit = async () => {
     if (!selectedUser) return;
-    
+
     try {
       setActionLoading(true);
       await api.put(`/admin/users/${selectedUser.id}`, {
         ...selectedUser,
-        role: editForm.role
+        role: editForm.role,
       });
-      
+
       // Update local state
-      setUsers(prev => prev.map(u => 
-        u.id === selectedUser.id ? { ...u, role: editForm.role } : u
-      ));
-      
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === selectedUser.id ? { ...u, role: editForm.role } : u
+        )
+      );
+
       setShowEditModal(false);
       setSelectedUser(null);
     } catch (err) {
@@ -137,14 +140,14 @@ export default function ManageUsers() {
 
   const confirmDelete = async () => {
     if (!selectedUser) return;
-    
+
     try {
       setActionLoading(true);
       await api.delete(`/admin/users/${selectedUser.id}`);
-      
+
       // Remove from local state
-      setUsers(prev => prev.filter(u => u.id !== selectedUser.id));
-      
+      setUsers((prev) => prev.filter((u) => u.id !== selectedUser.id));
+
       setShowDeleteModal(false);
       setSelectedUser(null);
     } catch (err) {
@@ -179,7 +182,7 @@ export default function ManageUsers() {
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="mb-8">
-          <button 
+          <button
             onClick={() => navigate("/admin")}
             className="flex items-center gap-2 text-gray-500 hover:text-[#1a1a2e] mb-4 transition-colors"
           >
@@ -192,8 +195,12 @@ export default function ManageUsers() {
                 <Users className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-[#1a1a2e]">Manage Users</h1>
-                <p className="text-gray-500 text-sm">{users.length} total users</p>
+                <h1 className="text-2xl font-bold text-[#1a1a2e]">
+                  Manage Users
+                </h1>
+                <p className="text-gray-500 text-sm">
+                  {users.length} total users
+                </p>
               </div>
             </div>
           </div>
@@ -242,9 +249,11 @@ export default function ManageUsers() {
           {filteredUsers.length === 0 ? (
             <div className="text-center py-16">
               <Users className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-              <h3 className="text-lg font-semibold text-gray-600 mb-2">No users found</h3>
+              <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                No users found
+              </h3>
               <p className="text-gray-500">
-                {searchQuery || roleFilter !== "ALL" 
+                {searchQuery || roleFilter !== "ALL"
                   ? "Try adjusting your search or filters"
                   : "No users registered yet"}
               </p>
@@ -254,24 +263,41 @@ export default function ManageUsers() {
               <table className="w-full">
                 <thead className="bg-gray-50 border-b">
                   <tr>
-                    <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">User</th>
-                    <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Email</th>
-                    <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Role</th>
-                    <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Joined</th>
-                    <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">Actions</th>
+                    <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">
+                      User
+                    </th>
+                    <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">
+                      Email
+                    </th>
+                    <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">
+                      Role
+                    </th>
+                    <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">
+                      Joined
+                    </th>
+                    <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {filteredUsers.map((u) => (
-                    <tr key={u.id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={u.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-[#1a1a2e] flex items-center justify-center text-white font-semibold">
                             {u.username?.charAt(0).toUpperCase() || "U"}
                           </div>
                           <div>
-                            <p className="font-medium text-[#1a1a2e]">{u.fullName || u.username}</p>
-                            <p className="text-sm text-gray-500">@{u.username}</p>
+                            <p className="font-medium text-[#1a1a2e]">
+                              {u.fullName || u.username}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              @{u.username}
+                            </p>
                           </div>
                         </div>
                       </td>
@@ -282,7 +308,11 @@ export default function ManageUsers() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${getRoleBadgeColor(u.role)}`}>
+                        <span
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${getRoleBadgeColor(
+                            u.role
+                          )}`}
+                        >
                           <Shield className="h-3 w-3" />
                           {u.role || "USER"}
                         </span>
@@ -328,13 +358,18 @@ export default function ManageUsers() {
       {showEditModal && selectedUser && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6">
-            <h3 className="text-lg font-bold text-[#1a1a2e] mb-4">Edit User Role</h3>
+            <h3 className="text-lg font-bold text-[#1a1a2e] mb-4">
+              Edit User Role
+            </h3>
             <p className="text-gray-600 mb-4">
-              Change role for <span className="font-semibold">{selectedUser.username}</span>
+              Change role for{" "}
+              <span className="font-semibold">{selectedUser.username}</span>
             </p>
-            
+
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Role
+              </label>
               <select
                 value={editForm.role}
                 onChange={(e) => setEditForm({ role: e.target.value })}
@@ -377,9 +412,12 @@ export default function ManageUsers() {
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-4">
               <Trash2 className="h-6 w-6 text-red-600" />
             </div>
-            <h3 className="text-lg font-bold text-[#1a1a2e] text-center mb-2">Delete User</h3>
+            <h3 className="text-lg font-bold text-[#1a1a2e] text-center mb-2">
+              Delete User
+            </h3>
             <p className="text-gray-600 text-center mb-6">
-              Are you sure you want to delete <span className="font-semibold">{selectedUser.username}</span>? 
+              Are you sure you want to delete{" "}
+              <span className="font-semibold">{selectedUser.username}</span>?
               This action cannot be undone.
             </p>
 

@@ -2,29 +2,29 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllArticles } from "@/api/apiService";
 import Loader from "@/components/Loader";
-import { 
-  AlertCircle, BookOpen, ArrowUpRight 
-} from "lucide-react";
+import { AlertCircle, BookOpen, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatRelativeTime } from "@/utils/formatDate";
 
 // Create URL slug from title
 function createSlug(title) {
-  return title
-    ?.toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim() || "article";
+  return (
+    title
+      ?.toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .trim() || "article"
+  );
 }
 
 // Get tag color based on category
 function getCategoryColor(category) {
   const colors = {
-    "Frontend": "bg-blue-100 text-blue-700",
-    "Backend": "bg-green-100 text-green-700",
+    Frontend: "bg-blue-100 text-blue-700",
+    Backend: "bg-green-100 text-green-700",
     "IT Interview Questions": "bg-purple-100 text-purple-700",
-    "General": "bg-slate-100 text-slate-700"
+    General: "bg-slate-100 text-slate-700",
   };
   return colors[category] || "bg-slate-100 text-slate-700";
 }
@@ -41,7 +41,7 @@ export default function FeaturedArticles({ limit = 6 }) {
         const articlesArray = Array.isArray(res.data)
           ? res.data
           : res.data.data || [];
-        
+
         setArticles(articlesArray.slice(0, limit));
         setLoading(false);
       })
@@ -118,10 +118,10 @@ export default function FeaturedArticles({ limit = 6 }) {
             >
               <div className="bg-white rounded-2xl p-5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-slate-100">
                 {/* Image Placeholder */}
-                <div className="bg-gradient-to-br from-indigo-50 to-slate-100 rounded-xl aspect-[16/10] flex items-center justify-center mb-4 overflow-hidden">
+                <div className="bg-linear-to-br from-indigo-50 to-slate-100 rounded-xl aspect-16/10 flex items-center justify-center mb-4 overflow-hidden">
                   {article.imageUrl ? (
-                    <img 
-                      src={article.imageUrl} 
+                    <img
+                      src={article.imageUrl}
                       alt={article.title}
                       className="w-full h-full object-cover"
                     />
@@ -129,24 +129,28 @@ export default function FeaturedArticles({ limit = 6 }) {
                     <BookOpen className="h-12 w-12 text-indigo-300" />
                   )}
                 </div>
-                
+
                 {/* Content */}
                 <div className="space-y-3">
                   {/* Category Tag */}
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(article.categoryName)}`}>
+                  <span
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(
+                      article.categoryName
+                    )}`}
+                  >
                     {article.categoryName}
                   </span>
-                  
+
                   {/* Title */}
                   <h3 className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2">
                     {article.title}
                   </h3>
-                  
+
                   {/* Description */}
                   <p className="text-sm text-slate-600 line-clamp-2">
                     {article.content?.substring(0, 120)}...
                   </p>
-                  
+
                   {/* Meta */}
                   <div className="flex items-center justify-between pt-2 text-xs text-slate-500">
                     <span>By {article.authorUsername}</span>
@@ -160,7 +164,7 @@ export default function FeaturedArticles({ limit = 6 }) {
 
         {/* View All Button */}
         <div className="text-center mt-10">
-          <Button 
+          <Button
             onClick={() => navigate("/posts")}
             className="bg-[#1a1a2e] text-white hover:bg-[#2d2d44] rounded-full px-8 h-12 text-base font-medium transition-all duration-200"
           >

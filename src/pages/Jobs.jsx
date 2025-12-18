@@ -2,9 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { getAllJobs } from "@/api/apiService";
 import Loader from "@/components/Loader";
 import JobCard from "@/components/JobCard";
-import { 
-  AlertCircle, Briefcase, Search, Filter 
-} from "lucide-react";
+import { AlertCircle, Briefcase, Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -17,9 +15,10 @@ export default function Jobs() {
   // Filter posts based on search term using useMemo
   const filteredPosts = useMemo(() => {
     if (!searchTerm) return posts;
-    return posts.filter(post => 
-      post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.content?.toLowerCase().includes(searchTerm.toLowerCase())
+    return posts.filter(
+      (post) =>
+        post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.content?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, posts]);
 
@@ -40,12 +39,12 @@ export default function Jobs() {
   }, []);
 
   const handleDelete = (postId) => {
-    setPosts(prev => prev.filter(p => p.id !== postId));
+    setPosts((prev) => prev.filter((p) => p.id !== postId));
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white pt-20">
+      <div className="min-h-screen bg-linear-to-b from-purple-50 to-white pt-20">
         <div className="max-w-7xl mx-auto px-6 py-12">
           <Loader text="Loading job listings..." />
         </div>
@@ -55,7 +54,7 @@ export default function Jobs() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white pt-20">
+      <div className="min-h-screen bg-linear-to-b from-purple-50 to-white pt-20">
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="flex items-center justify-center gap-2 text-red-500">
             <AlertCircle className="h-5 w-5" />
@@ -67,7 +66,7 @@ export default function Jobs() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white pt-20">
+    <div className="min-h-screen bg-linear-to-b from-purple-50 to-white pt-20">
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
         <div className="text-center mb-12">
@@ -109,11 +108,7 @@ export default function Jobs() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPosts.map((job) => (
-              <JobCard 
-                key={job.id} 
-                job={job} 
-                onDelete={handleDelete}
-              />
+              <JobCard key={job.id} job={job} onDelete={handleDelete} />
             ))}
           </div>
         )}

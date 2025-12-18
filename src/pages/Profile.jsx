@@ -128,20 +128,23 @@ export default function Profile() {
         {/* Messages */}
         {error && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3 text-red-700">
-            <AlertCircle className="h-5 w-5 flex-shrink-0" />
+            <AlertCircle className="h-5 w-5 shrink-0" />
             {error}
           </div>
         )}
 
         {success && (
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 text-green-700">
-            <CheckCircle className="h-5 w-5 flex-shrink-0" />
+            <CheckCircle className="h-5 w-5 shrink-0" />
             {success}
           </div>
         )}
 
         {/* Profile Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-xl shadow-sm p-6 space-y-6"
+        >
           {/* Avatar Section */}
           <div className="flex items-center gap-4 pb-6 border-b">
             <div className="w-20 h-20 rounded-full bg-[#1a1a2e] flex items-center justify-center text-white text-2xl font-bold overflow-hidden">

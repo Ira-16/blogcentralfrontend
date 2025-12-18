@@ -7,12 +7,14 @@ import { formatRelativeTime } from "@/utils/formatDate";
 
 // Create URL slug from title
 function createSlug(title) {
-  return title
-    ?.toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim() || "post";
+  return (
+    title
+      ?.toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .trim() || "post"
+  );
 }
 
 // Extract description from content
@@ -36,28 +38,48 @@ function getReadingTime(content) {
 // Get gradient color based on category or title
 function getCategoryStyle(category, title) {
   const name = category?.name?.toLowerCase() || title?.toLowerCase() || "";
-  
+
   if (name.includes("tech") || name.includes("programming")) {
-    return { gradient: "from-blue-500 to-indigo-600", bg: "bg-blue-50", text: "text-blue-700" };
+    return {
+      gradient: "from-blue-500 to-indigo-600",
+      bg: "bg-blue-50",
+      text: "text-blue-700",
+    };
   }
   if (name.includes("design") || name.includes("ui")) {
-    return { gradient: "from-pink-500 to-rose-600", bg: "bg-pink-50", text: "text-pink-700" };
+    return {
+      gradient: "from-pink-500 to-rose-600",
+      bg: "bg-pink-50",
+      text: "text-pink-700",
+    };
   }
   if (name.includes("tutorial") || name.includes("guide")) {
-    return { gradient: "from-emerald-500 to-teal-600", bg: "bg-emerald-50", text: "text-emerald-700" };
+    return {
+      gradient: "from-emerald-500 to-teal-600",
+      bg: "bg-emerald-50",
+      text: "text-emerald-700",
+    };
   }
   if (name.includes("news") || name.includes("update")) {
-    return { gradient: "from-amber-500 to-orange-600", bg: "bg-amber-50", text: "text-amber-700" };
+    return {
+      gradient: "from-amber-500 to-orange-600",
+      bg: "bg-amber-50",
+      text: "text-amber-700",
+    };
   }
-  
-  return { gradient: "from-slate-600 to-slate-800", bg: "bg-slate-100", text: "text-slate-700" };
+
+  return {
+    gradient: "from-slate-600 to-slate-800",
+    bg: "bg-slate-100",
+    text: "text-slate-700",
+  };
 }
 
 export default function PostCard({ post, onDelete }) {
   const { token, user } = useAuth();
   const navigate = useNavigate();
   const [deleting, setDeleting] = useState(false);
-  
+
   if (!post) return null;
 
   const description = getDescription(post.content);
@@ -65,16 +87,18 @@ export default function PostCard({ post, onDelete }) {
   const categoryName = post.category?.name || "Article";
   const categoryStyle = getCategoryStyle(post.category, post.title);
   const authorName = post.author?.username || "Anonymous";
-  const publishDate = post.createdAt ? formatRelativeTime(post.createdAt) : "Recently";
-  
+  const publishDate = post.createdAt
+    ? formatRelativeTime(post.createdAt)
+    : "Recently";
+
   const isAdmin = user?.role === "ADMIN";
 
   const handleDelete = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (!window.confirm("Are you sure you want to delete this post?")) return;
-    
+
     setDeleting(true);
     try {
       await deletePost(post.id);
@@ -94,33 +118,37 @@ export default function PostCard({ post, onDelete }) {
   };
 
   const handleCardClick = (e) => {
-    if (e.target.closest('button')) return;
+    if (e.target.closest("button")) return;
     const slug = createSlug(post.title);
     navigate(`/posts/${post.id}/${slug}`);
   };
 
   return (
-    <article 
+    <article
       onClick={handleCardClick}
       className="group relative bg-white rounded-2xl overflow-hidden border border-gray-100 
                  shadow-sm hover:shadow-lg hover:shadow-gray-200/50
                  transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer"
     >
       {/* Image Section */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50">
+      <div className="relative aspect-16/10 overflow-hidden bg-linear-to-br from-gray-100 to-gray-50">
         {post.imageUrl ? (
-          <img 
-            src={post.imageUrl} 
+          <img
+            src={post.imageUrl}
             alt={post.title}
             className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           />
         ) : (
-          <div className={`w-full h-full bg-gradient-to-br ${categoryStyle.gradient} opacity-10`} />
+          <div
+            className={`w-full h-full bg-linear-to-br ${categoryStyle.gradient} opacity-10`}
+          />
         )}
-        
+
         {/* Category Badge */}
         <div className="absolute top-4 left-4">
-          <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${categoryStyle.bg} ${categoryStyle.text} backdrop-blur-sm`}>
+          <span
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold ${categoryStyle.bg} ${categoryStyle.text} backdrop-blur-sm`}
+          >
             {categoryName}
           </span>
         </div>
@@ -150,11 +178,13 @@ export default function PostCard({ post, onDelete }) {
       {/* Content Section */}
       <div className="p-5">
         {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-900 leading-snug mb-2 line-clamp-2 
-                       group-hover:text-[#1a1a2e] transition-colors duration-200">
+        <h3
+          className="text-lg font-semibold text-gray-900 leading-snug mb-2 line-clamp-2 
+                       group-hover:text-[#1a1a2e] transition-colors duration-200"
+        >
           {post.title}
         </h3>
-        
+
         {/* Description */}
         <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-4">
           {description || "Explore this article to learn more..."}
@@ -171,7 +201,7 @@ export default function PostCard({ post, onDelete }) {
             <span className="w-1 h-1 rounded-full bg-gray-300" />
             <span>{publishDate}</span>
           </div>
-          
+
           {/* Reading Time & Arrow */}
           <div className="flex items-center gap-2">
             <span className="text-xs text-gray-400 flex items-center gap-1">

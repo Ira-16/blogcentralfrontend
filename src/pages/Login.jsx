@@ -4,15 +4,15 @@ import api from "../api/axios";
 import { useAuth } from "../auth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
-  LogIn, 
-  User, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+import {
+  LogIn,
+  User,
+  Lock,
+  Eye,
+  EyeOff,
   AlertCircle,
   Loader2,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react";
 
 export default function Login() {
@@ -33,7 +33,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    
+
     if (!form.username.trim() || !form.password) {
       setError("Please enter both username and password");
       return;
@@ -62,11 +62,12 @@ export default function Login() {
       navigate("/");
     } catch (err) {
       console.error(err);
-      
+
       if (err.response) {
         const status = err.response.status;
-        const message = err.response.data?.message || err.response.data?.error || "";
-        
+        const message =
+          err.response.data?.message || err.response.data?.error || "";
+
         if (status === 401 || status === 403) {
           // Both 401 and 403 during login mean invalid credentials
           setError("Invalid username or password. Please try again.");
@@ -93,13 +94,11 @@ export default function Login() {
         {/* Card Container */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#1a1a2e] to-[#16213e] px-8 py-8 text-center">
+          <div className="bg-linear-to-r from-[#1a1a2e] to-[#16213e] px-8 py-8 text-center">
             <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mx-auto mb-4">
               <LogIn className="w-7 h-7 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-white mb-2">
-              Welcome Back
-            </h1>
+            <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
             <p className="text-gray-300 text-sm">
               Sign in to continue to your account
             </p>
@@ -110,7 +109,7 @@ export default function Login() {
             {/* Error Message */}
             {error && (
               <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                 <p className="text-sm text-red-700">{error}</p>
               </div>
             )}
@@ -141,10 +140,7 @@ export default function Login() {
                 <label className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <a 
-                  href="#" 
-                  className="text-xs text-[#1a1a2e] hover:underline"
-                >
+                <a href="#" className="text-xs text-[#1a1a2e] hover:underline">
                   Forgot password?
                 </a>
               </div>
@@ -196,8 +192,8 @@ export default function Login() {
             {/* Register Link */}
             <p className="text-center text-sm text-gray-600 mt-6">
               Don't have an account?{" "}
-              <Link 
-                to="/register" 
+              <Link
+                to="/register"
                 className="font-medium text-[#1a1a2e] hover:text-[#16213e] hover:underline transition-colors"
               >
                 Create one
